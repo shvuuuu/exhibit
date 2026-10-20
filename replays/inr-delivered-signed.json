@@ -1,0 +1,235 @@
+{
+  "scenario": "inr-delivered-signed",
+  "model": "claude-opus-5-5",
+  "recorded_at": "2026-10-20T12:16:43.627Z",
+  "ids": {
+    "dispute_id": "PP-D-50885",
+    "order_id": "KA-10785"
+  },
+  "events": [
+    {
+      "t": "tool_call",
+      "id": "call_mvgndfpc_7",
+      "name": "get_paypal_dispute",
+      "kind": "paypal",
+      "label": "PayPal Disputes API",
+      "input": {
+        "dispute_id": "PP-D-50885"
+      },
+      "at": "2026-10-20T12:16:19.392Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgndh9x_8",
+      "name": "lookup_order",
+      "kind": "store",
+      "label": "Store orders",
+      "input": {
+        "transaction_id": "76B061BCB78545C4B"
+      },
+      "at": "2026-10-20T12:16:21.429Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgndhmo_9",
+      "name": "check_seller_protection",
+      "kind": "policy",
+      "label": "PayPal Seller Protection",
+      "input": {
+        "dispute_id": "PP-D-50885"
+      },
+      "at": "2026-10-20T12:16:21.888Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgndho0_10",
+      "name": "get_customer_history",
+      "kind": "store",
+      "label": "Customer history",
+      "input": {
+        "email": "megan.hale@example.com"
+      },
+      "at": "2026-10-20T12:16:21.936Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgndj0m_11",
+      "name": "get_carrier_tracking",
+      "kind": "carrier",
+      "label": "Carrier tracking",
+      "input": {
+        "order_id": "KA-10785"
+      },
+      "at": "2026-10-20T12:16:23.686Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgndj2h_12",
+      "name": "get_support_conversation",
+      "kind": "store",
+      "label": "Support inbox",
+      "input": {
+        "order_id": "KA-10785"
+      },
+      "at": "2026-10-20T12:16:23.753Z"
+    },
+    {
+      "t": "thinking",
+      "text": "This looks like a strong case, with shipment, seller-protection, order, and customer history as exhibits, though signature doesn't need its own reference beyond the shipment one. I'm noting the evidence types as proof of fulfillment and proof of delivery signature, with the buyer message left null since this is the chargeback stage with no message sent.\n\n"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgndwul_13",
+      "name": "file_case_brief",
+      "kind": "brief",
+      "label": "Case brief",
+      "input": {
+        "decision": "FIGHT",
+        "headline": "Signed for by M. HALE at the matching Austin address — fight with UPS proof of delivery",
+        "summary": "Megan Hale says her Weekender bag ($284) never arrived. UPS tracking 1Z84V6A90392847516 shows it was shipped one day after payment and delivered on 2026-10-05 to the exact address on the PayPal transaction. The delivery was signed for by \"M. HALE\" and the carrier took a photo at the front door. Every Seller Protection requirement is met, so the merchant should fight with proof of fulfillment and the signature.",
+        "win_likelihood": 88,
+        "confidence": "HIGH",
+        "reasoning": [
+          {
+            "point": "UPS shows the parcel delivered 2026-10-05 16:52 to 2207 Cedar Bend Dr, Austin TX 78758, the same as the transaction shipping address. Tracking was already synced to PayPal.",
+            "refs": [
+              "shipment:SHP-10785",
+              "order:KA-10785"
+            ]
+          },
+          {
+            "point": "Delivery was signature-required, and UPS recorded a signature from 'M. HALE' plus a front-door photo showing the house number. That directly contradicts the claim that the bag never arrived.",
+            "refs": [
+              "shipment:SHP-10785"
+            ]
+          },
+          {
+            "point": "The Seller Protection check passes on every requirement: covered claim type, matching address, verifiable tracking, delivered status, no redirect, shipped within 1 day.",
+            "refs": [
+              "paypal:seller-protection:PP-D-50885"
+            ]
+          },
+          {
+            "point": "The buyer never contacted the store before filing. She is a repeat customer (4 orders, no prior disputes), so this could be an honest mix-up such as a household member signing, but the delivery record is conclusive.",
+            "refs": [
+              "conversation:KA-10785",
+              "customer:megan.hale@example.com",
+              "paypal:message:PP-D-50885:0"
+            ]
+          }
+        ],
+        "risks": [
+          "The buyer may say the signature isn't hers or that a household member or neighbor signed. The address match and photo still meet PayPal's proof-of-delivery standard.",
+          "Fighting may strain the relationship with a repeat customer (LTV $618). The merchant could reach out by email to help her look for the parcel without conceding the claim."
+        ],
+        "missing_evidence": [
+          "A downloadable UPS proof-of-delivery letter (POD) with the signature image would strengthen Exhibit B."
+        ],
+        "exhibits": [
+          {
+            "label": "A",
+            "title": "UPS tracking 1Z84V6A90392847516 — delivered 2026-10-05",
+            "ref": "shipment:SHP-10785",
+            "why": "Verifiable tracking: picked up in Brooklyn 10/01, delivered 10/05 to 2207 Cedar Bend Dr, Austin TX 78758, signed by M. HALE, with a front-door photo."
+          },
+          {
+            "label": "B",
+            "title": "Order KA-10785 and transaction shipping address",
+            "ref": "order:KA-10785",
+            "why": "Shows the PayPal transaction address matches the UPS delivery address, and that the item was sold with UPS Ground, signature required."
+          },
+          {
+            "label": "C",
+            "title": "Seller Protection requirements check",
+            "ref": "paypal:seller-protection:PP-D-50885",
+            "why": "Every published US Seller Protection requirement for item-not-received is satisfied."
+          }
+        ],
+        "paypal_action": {
+          "type": "provide_evidence",
+          "evidence_types": [
+            "PROOF_OF_FULFILLMENT",
+            "PROOF_OF_DELIVERY_SIGNATURE"
+          ],
+          "tracking_ref": "shipment:SHP-10785"
+        },
+        "response_letter": "Kora Atelier shipped and delivered this order, and the buyer signed for it at the shipping address on the PayPal transaction.\n\n1. On 2026-09-30 the buyer paid $284.00 for one Weekender bag in Cognac (order KA-10785), shipped by UPS Ground with signature required (Exhibit B).\n\n2. We shipped on 2026-10-01, one day after payment, under UPS tracking 1Z84V6A90392847516. The parcel was picked up in Brooklyn, NY, passed through Dallas, TX on 10/03 and went out for delivery in Austin, TX on 10/05 (Exhibit A).\n\n3. UPS recorded the parcel as delivered on 2026-10-05 at 16:52 to 2207 Cedar Bend Dr, Austin, TX 78758. This is the same address as the Transaction Details page (Exhibits A, B).\n\n4. The delivery was signed for by \"M. HALE\", which matches the buyer's name. UPS also took a delivery photo of the parcel at the front door with the house number visible (Exhibit A). This tracking was synced to PayPal at the time of shipment.\n\n5. The buyer did not contact us about a missing parcel before opening this case.\n\nThe shipment meets every PayPal Seller Protection requirement for item-not-received claims: a verifiable tracking number, delivered status with a date, a signature, and delivery to the transaction address with no redirect (Exhibit C). We respectfully ask that the claim be decided in the seller's favor.\n\nKora Atelier LLC, studio@koraatelier.example",
+        "buyer_message": null
+      },
+      "at": "2026-10-20T12:16:41.613Z"
+    }
+  ],
+  "brief": {
+    "decision": "FIGHT",
+    "headline": "Signed for by M. HALE at the matching Austin address — fight with UPS proof of delivery",
+    "summary": "Megan Hale says her Weekender bag ($284) never arrived. UPS tracking 1Z84V6A90392847516 shows it was shipped one day after payment and delivered on 2026-10-05 to the exact address on the PayPal transaction. The delivery was signed for by \"M. HALE\" and the carrier took a photo at the front door. Every Seller Protection requirement is met, so the merchant should fight with proof of fulfillment and the signature.",
+    "win_likelihood": 88,
+    "confidence": "HIGH",
+    "reasoning": [
+      {
+        "point": "UPS shows the parcel delivered 2026-10-05 16:52 to 2207 Cedar Bend Dr, Austin TX 78758, the same as the transaction shipping address. Tracking was already synced to PayPal.",
+        "refs": [
+          "shipment:SHP-10785",
+          "order:KA-10785"
+        ]
+      },
+      {
+        "point": "Delivery was signature-required, and UPS recorded a signature from 'M. HALE' plus a front-door photo showing the house number. That directly contradicts the claim that the bag never arrived.",
+        "refs": [
+          "shipment:SHP-10785"
+        ]
+      },
+      {
+        "point": "The Seller Protection check passes on every requirement: covered claim type, matching address, verifiable tracking, delivered status, no redirect, shipped within 1 day.",
+        "refs": [
+          "paypal:seller-protection:PP-D-50885"
+        ]
+      },
+      {
+        "point": "The buyer never contacted the store before filing. She is a repeat customer (4 orders, no prior disputes), so this could be an honest mix-up such as a household member signing, but the delivery record is conclusive.",
+        "refs": [
+          "conversation:KA-10785",
+          "customer:megan.hale@example.com",
+          "paypal:message:PP-D-50885:0"
+        ]
+      }
+    ],
+    "risks": [
+      "The buyer may say the signature isn't hers or that a household member or neighbor signed. The address match and photo still meet PayPal's proof-of-delivery standard.",
+      "Fighting may strain the relationship with a repeat customer (LTV $618). The merchant could reach out by email to help her look for the parcel without conceding the claim."
+    ],
+    "missing_evidence": [
+      "A downloadable UPS proof-of-delivery letter (POD) with the signature image would strengthen Exhibit B."
+    ],
+    "exhibits": [
+      {
+        "label": "A",
+        "title": "UPS tracking 1Z84V6A90392847516 — delivered 2026-10-05",
+        "ref": "shipment:SHP-10785",
+        "why": "Verifiable tracking: picked up in Brooklyn 10/01, delivered 10/05 to 2207 Cedar Bend Dr, Austin TX 78758, signed by M. HALE, with a front-door photo."
+      },
+      {
+        "label": "B",
+        "title": "Order KA-10785 and transaction shipping address",
+        "ref": "order:KA-10785",
+        "why": "Shows the PayPal transaction address matches the UPS delivery address, and that the item was sold with UPS Ground, signature required."
+      },
+      {
+        "label": "C",
+        "title": "Seller Protection requirements check",
+        "ref": "paypal:seller-protection:PP-D-50885",
+        "why": "Every published US Seller Protection requirement for item-not-received is satisfied."
+      }
+    ],
+    "paypal_action": {
+      "type": "provide_evidence",
+      "evidence_types": [
+        "PROOF_OF_FULFILLMENT",
+        "PROOF_OF_DELIVERY_SIGNATURE"
+      ],
+      "tracking_ref": "shipment:SHP-10785"
+    },
+    "response_letter": "Kora Atelier shipped and delivered this order, and the buyer signed for it at the shipping address on the PayPal transaction.\n\n1. On 2026-09-30 the buyer paid $284.00 for one Weekender bag in Cognac (order KA-10785), shipped by UPS Ground with signature required (Exhibit B).\n\n2. We shipped on 2026-10-01, one day after payment, under UPS tracking 1Z84V6A90392847516. The parcel was picked up in Brooklyn, NY, passed through Dallas, TX on 10/03 and went out for delivery in Austin, TX on 10/05 (Exhibit A).\n\n3. UPS recorded the parcel as delivered on 2026-10-05 at 16:52 to 2207 Cedar Bend Dr, Austin, TX 78758. This is the same address as the Transaction Details page (Exhibits A, B).\n\n4. The delivery was signed for by \"M. HALE\", which matches the buyer's name. UPS also took a delivery photo of the parcel at the front door with the house number visible (Exhibit A). This tracking was synced to PayPal at the time of shipment.\n\n5. The buyer did not contact us about a missing parcel before opening this case.\n\nThe shipment meets every PayPal Seller Protection requirement for item-not-received claims: a verifiable tracking number, delivered status with a date, a signature, and delivery to the transaction address with no redirect (Exhibit C). We respectfully ask that the claim be decided in the seller's favor.\n\nKora Atelier LLC, studio@koraatelier.example",
+    "buyer_message": null
+  }
+}

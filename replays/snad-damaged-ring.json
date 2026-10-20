@@ -1,0 +1,257 @@
+{
+  "scenario": "snad-damaged-ring",
+  "model": "claude-opus-5-5",
+  "recorded_at": "2026-10-20T11:53:18.129Z",
+  "ids": {
+    "dispute_id": "PP-D-50240",
+    "order_id": "KA-10529"
+  },
+  "events": [
+    {
+      "t": "tool_call",
+      "id": "call_mvgmj506_28",
+      "name": "get_paypal_dispute",
+      "kind": "paypal",
+      "label": "PayPal Disputes API",
+      "input": {
+        "dispute_id": "PP-D-50240"
+      },
+      "at": "2026-10-20T11:52:45.846Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmj6ft_30",
+      "name": "lookup_order",
+      "kind": "store",
+      "label": "Store orders",
+      "input": {
+        "transaction_id": "9QA46620BX5508417"
+      },
+      "at": "2026-10-20T11:52:47.705Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmj6s4_32",
+      "name": "get_customer_history",
+      "kind": "store",
+      "label": "Customer history",
+      "input": {
+        "email": "sam.ortiz@example.com"
+      },
+      "at": "2026-10-20T11:52:48.148Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmj6t2_33",
+      "name": "get_store_policies",
+      "kind": "policy",
+      "label": "Store policies",
+      "input": {},
+      "at": "2026-10-20T11:52:48.182Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmj856_36",
+      "name": "get_carrier_tracking",
+      "kind": "carrier",
+      "label": "Carrier tracking",
+      "input": {
+        "order_id": "KA-10529"
+      },
+      "at": "2026-10-20T11:52:49.914Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmj8bv_37",
+      "name": "get_support_conversation",
+      "kind": "store",
+      "label": "Support inbox",
+      "input": {
+        "order_id": "KA-10529"
+      },
+      "at": "2026-10-20T11:52:50.155Z"
+    },
+    {
+      "t": "thinking",
+      "text": "Given this was likely damaged in transit, policy requires repair, replacement, or refund at our cost, and since the store hasn't responded to the email, this is still at the inquiry stage. I'm weighing whether to offer a replacement or check what refund-with-replacement options PayPal's offer types actually support here.\n\nSending a replacement with a prepaid return label for the damaged item seems like the best customer-preserving path, though I'll note that we could also offer a straight refund if they prefer. I'm also flagging that the merchant shipped via FedEx without signature confirmation despite the $250+ policy threshold, and that if this were disputed, our win likelihood is low since the buyer has photo evidence of transit damage even though QC confirmed it left intact.\n\n"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmjsd7_41",
+      "name": "file_case_brief",
+      "kind": "brief",
+      "label": "Case brief",
+      "input": {
+        "decision": "OFFER",
+        "headline": "Strap ring cracked in transit — offer a free replacement, don't fight",
+        "summary": "Sam Ortiz's $355 Chestnut Travel Duffle was delivered on Oct 16. The next day Sam emailed a photo showing one brass strap ring cracked through, and that email never got a reply. Our QC photo shows both rings were intact when we packed it, so the damage almost certainly happened in transit. That doesn't help us in a damaged-item claim, and our own returns policy promises to repair, replace or refund damaged items at our cost. The case is still at the inquiry stage, so offering a replacement now keeps the customer and should close it before it escalates.",
+        "win_likelihood": 20,
+        "confidence": "HIGH",
+        "reasoning": [
+          {
+            "point": "The buyer reports damage, not a listing mismatch. One brass strap ring is cracked, so the detachable strap can't be used. Sam told us first by email with a photo, the day after delivery.",
+            "refs": [
+              "paypal:message:PP-D-50240:0",
+              "msg:MSG-10529-1",
+              "listing:KA-DUF-CHS"
+            ]
+          },
+          {
+            "point": "Our QC photo shows both rings intact at packing. The FedEx parcel went through the Memphis hub and was left at the front door with no signature or delivery photo. Damage in transit is the likeliest cause, and in a damaged-item claim that's still on us.",
+            "refs": [
+              "shipment:SHP-10529"
+            ]
+          },
+          {
+            "point": "Our Returns policy, which Sam accepted at checkout, says damaged items are repaired, replaced or refunded at our cost. Fighting would go against our own stated policy.",
+            "refs": [
+              "policy:returns",
+              "order:KA-10529"
+            ]
+          },
+          {
+            "point": "Sam's email went unanswered before the case was opened. This is a first-time buyer with no prior disputes, and it's still the inquiry stage, so a fair offer now should resolve it.",
+            "refs": [
+              "conversation:KA-10529",
+              "customer:sam.ortiz@example.com",
+              "paypal:dispute:PP-D-50240"
+            ]
+          },
+          {
+            "point": "Our Shipping policy promises UPS/USPS and signature confirmation for orders over $250. This order went FedEx Home Delivery with no signature. That gap would weaken any fight.",
+            "refs": [
+              "policy:shipping",
+              "shipment:SHP-10529"
+            ]
+          }
+        ],
+        "risks": [
+          "Sam may prefer a refund to a replacement and turn down the offer. If so, switch to a full refund with a prepaid return label, as the buyer message already offers.",
+          "Check that a Chestnut duffle is in stock before sending the offer. If none is, offer REFUND_WITH_RETURN instead.",
+          "If nobody responds before Oct 28, the case can escalate to a claim. The shipping-policy gaps (FedEx instead of UPS/USPS, no signature over $250) and the unanswered email would count against us."
+        ],
+        "missing_evidence": [
+          "The buyer's damage photo: it was attached to the email but isn't in our records, so get it for a FedEx damage claim",
+          "A FedEx damage claim filed with the shipper's QC photo, to recover the cost",
+          "Confirmation that a replacement Chestnut duffle (or a spare brass ring for a repair) is in stock"
+        ],
+        "exhibits": [
+          {
+            "label": "A",
+            "title": "Pre-dispatch QC photo and FedEx tracking",
+            "ref": "shipment:SHP-10529",
+            "why": "Both brass rings were intact at packing. The parcel was delivered Oct 16 to the transaction address, so the damage happened in transit."
+          },
+          {
+            "label": "B",
+            "title": "Buyer's damage report email",
+            "ref": "msg:MSG-10529-1",
+            "why": "The buyer reported the cracked ring with a photo the day after delivery."
+          },
+          {
+            "label": "C",
+            "title": "Returns & Refunds policy",
+            "ref": "policy:returns",
+            "why": "Damaged items are repaired, replaced or refunded at the seller's cost. The replacement offer follows this policy."
+          }
+        ],
+        "paypal_action": {
+          "type": "make_offer",
+          "offer_type": "REPLACEMENT_WITHOUT_REFUND",
+          "amount": 0
+        },
+        "response_letter": "Kora Atelier is sorry this duffle arrived damaged, and we are offering a free replacement at our cost under our published Returns policy.\n\nOur pre-dispatch QC photo shows both solid brass strap rings intact at packing. FedEx tracking 781946335022 shows pickup in Brooklyn on Oct 11, a stop at the Memphis hub, and delivery to the buyer's San Diego address on Oct 16 (Exhibit A). The buyer emailed us on Oct 17 with a photo of one cracked strap ring (Exhibit B), so the damage most likely happened in transit.\n\nOur Returns policy, which the buyer accepted at checkout, says defective or damaged items are repaired, replaced or refunded at our cost (Exhibit C). We will ship a new Travel Duffle in Chestnut at no charge and email a prepaid label to return the damaged bag. If the buyer would rather have a full refund, we will issue one when they return the bag on the same prepaid label. We apologize that the buyer's email was not answered before this case was opened.",
+        "buyer_message": {
+          "language": "en",
+          "text": "Hi Sam,\n\nI'm so sorry your Travel Duffle arrived with a cracked strap ring, and that you didn't hear back from us sooner after your email. Every bag is checked and photographed before it leaves our Brooklyn studio, and both rings were intact when we packed yours, so it looks like it was damaged on the way to you. That isn't the experience it should have been.\n\nWe'll send you a new Chestnut Travel Duffle at no cost and email you a prepaid label to return the damaged one. If you'd prefer a full refund instead, just tell us. You'd use the same prepaid label, and we'll refund you to your original payment method as soon as the bag gets back to us.\n\nThank you for your patience, and again, we're sorry.\n\nWarm regards,\nKora Atelier\nstudio@koraatelier.example"
+        }
+      },
+      "at": "2026-10-20T11:53:16.123Z"
+    }
+  ],
+  "brief": {
+    "decision": "OFFER",
+    "headline": "Strap ring cracked in transit — offer a free replacement, don't fight",
+    "summary": "Sam Ortiz's $355 Chestnut Travel Duffle was delivered on Oct 16. The next day Sam emailed a photo showing one brass strap ring cracked through, and that email never got a reply. Our QC photo shows both rings were intact when we packed it, so the damage almost certainly happened in transit. That doesn't help us in a damaged-item claim, and our own returns policy promises to repair, replace or refund damaged items at our cost. The case is still at the inquiry stage, so offering a replacement now keeps the customer and should close it before it escalates.",
+    "win_likelihood": 20,
+    "confidence": "HIGH",
+    "reasoning": [
+      {
+        "point": "The buyer reports damage, not a listing mismatch. One brass strap ring is cracked, so the detachable strap can't be used. Sam told us first by email with a photo, the day after delivery.",
+        "refs": [
+          "paypal:message:PP-D-50240:0",
+          "msg:MSG-10529-1",
+          "listing:KA-DUF-CHS"
+        ]
+      },
+      {
+        "point": "Our QC photo shows both rings intact at packing. The FedEx parcel went through the Memphis hub and was left at the front door with no signature or delivery photo. Damage in transit is the likeliest cause, and in a damaged-item claim that's still on us.",
+        "refs": [
+          "shipment:SHP-10529"
+        ]
+      },
+      {
+        "point": "Our Returns policy, which Sam accepted at checkout, says damaged items are repaired, replaced or refunded at our cost. Fighting would go against our own stated policy.",
+        "refs": [
+          "policy:returns",
+          "order:KA-10529"
+        ]
+      },
+      {
+        "point": "Sam's email went unanswered before the case was opened. This is a first-time buyer with no prior disputes, and it's still the inquiry stage, so a fair offer now should resolve it.",
+        "refs": [
+          "conversation:KA-10529",
+          "customer:sam.ortiz@example.com",
+          "paypal:dispute:PP-D-50240"
+        ]
+      },
+      {
+        "point": "Our Shipping policy promises UPS/USPS and signature confirmation for orders over $250. This order went FedEx Home Delivery with no signature. That gap would weaken any fight.",
+        "refs": [
+          "policy:shipping",
+          "shipment:SHP-10529"
+        ]
+      }
+    ],
+    "risks": [
+      "Sam may prefer a refund to a replacement and turn down the offer. If so, switch to a full refund with a prepaid return label, as the buyer message already offers.",
+      "Check that a Chestnut duffle is in stock before sending the offer. If none is, offer REFUND_WITH_RETURN instead.",
+      "If nobody responds before Oct 28, the case can escalate to a claim. The shipping-policy gaps (FedEx instead of UPS/USPS, no signature over $250) and the unanswered email would count against us."
+    ],
+    "missing_evidence": [
+      "The buyer's damage photo: it was attached to the email but isn't in our records, so get it for a FedEx damage claim",
+      "A FedEx damage claim filed with the shipper's QC photo, to recover the cost",
+      "Confirmation that a replacement Chestnut duffle (or a spare brass ring for a repair) is in stock"
+    ],
+    "exhibits": [
+      {
+        "label": "A",
+        "title": "Pre-dispatch QC photo and FedEx tracking",
+        "ref": "shipment:SHP-10529",
+        "why": "Both brass rings were intact at packing. The parcel was delivered Oct 16 to the transaction address, so the damage happened in transit."
+      },
+      {
+        "label": "B",
+        "title": "Buyer's damage report email",
+        "ref": "msg:MSG-10529-1",
+        "why": "The buyer reported the cracked ring with a photo the day after delivery."
+      },
+      {
+        "label": "C",
+        "title": "Returns & Refunds policy",
+        "ref": "policy:returns",
+        "why": "Damaged items are repaired, replaced or refunded at the seller's cost. The replacement offer follows this policy."
+      }
+    ],
+    "paypal_action": {
+      "type": "make_offer",
+      "offer_type": "REPLACEMENT_WITHOUT_REFUND",
+      "amount": 0
+    },
+    "response_letter": "Kora Atelier is sorry this duffle arrived damaged, and we are offering a free replacement at our cost under our published Returns policy.\n\nOur pre-dispatch QC photo shows both solid brass strap rings intact at packing. FedEx tracking 781946335022 shows pickup in Brooklyn on Oct 11, a stop at the Memphis hub, and delivery to the buyer's San Diego address on Oct 16 (Exhibit A). The buyer emailed us on Oct 17 with a photo of one cracked strap ring (Exhibit B), so the damage most likely happened in transit.\n\nOur Returns policy, which the buyer accepted at checkout, says defective or damaged items are repaired, replaced or refunded at our cost (Exhibit C). We will ship a new Travel Duffle in Chestnut at no charge and email a prepaid label to return the damaged bag. If the buyer would rather have a full refund, we will issue one when they return the bag on the same prepaid label. We apologize that the buyer's email was not answered before this case was opened.",
+    "buyer_message": {
+      "language": "en",
+      "text": "Hi Sam,\n\nI'm so sorry your Travel Duffle arrived with a cracked strap ring, and that you didn't hear back from us sooner after your email. Every bag is checked and photographed before it leaves our Brooklyn studio, and both rings were intact when we packed yours, so it looks like it was damaged on the way to you. That isn't the experience it should have been.\n\nWe'll send you a new Chestnut Travel Duffle at no cost and email you a prepaid label to return the damaged one. If you'd prefer a full refund instead, just tell us. You'd use the same prepaid label, and we'll refund you to your original payment method as soon as the bag gets back to us.\n\nThank you for your patience, and again, we're sorry.\n\nWarm regards,\nKora Atelier\nstudio@koraatelier.example"
+    }
+  }
+}

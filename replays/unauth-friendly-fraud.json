@@ -1,0 +1,284 @@
+{
+  "scenario": "unauth-friendly-fraud",
+  "model": "claude-opus-5-5",
+  "recorded_at": "2026-10-20T12:06:00.432Z",
+  "ids": {
+    "dispute_id": "PP-D-50219",
+    "order_id": "KA-10503"
+  },
+  "events": [
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzjq2_3",
+      "name": "get_paypal_dispute",
+      "kind": "paypal",
+      "label": "PayPal Disputes API",
+      "input": {
+        "dispute_id": "PP-D-50219"
+      },
+      "at": "2026-10-20T12:05:31.418Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzldp_8",
+      "name": "lookup_order",
+      "kind": "store",
+      "label": "Store orders",
+      "input": {
+        "transaction_id": "2HT58193LQ0047731"
+      },
+      "at": "2026-10-20T12:05:33.565Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzlou_14",
+      "name": "check_seller_protection",
+      "kind": "policy",
+      "label": "PayPal Seller Protection",
+      "input": {
+        "dispute_id": "PP-D-50219"
+      },
+      "at": "2026-10-20T12:05:33.966Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzlve_15",
+      "name": "get_customer_history",
+      "kind": "store",
+      "label": "Customer history",
+      "input": {
+        "email": "d.reyes@example.com"
+      },
+      "at": "2026-10-20T12:05:34.202Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzoqh_22",
+      "name": "get_carrier_tracking",
+      "kind": "carrier",
+      "label": "Carrier tracking",
+      "input": {
+        "order_id": "KA-10503"
+      },
+      "at": "2026-10-20T12:05:37.913Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzp27_23",
+      "name": "get_payment_risk_signals",
+      "kind": "risk",
+      "label": "Risk signals",
+      "input": {
+        "order_id": "KA-10503"
+      },
+      "at": "2026-10-20T12:05:38.335Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzp4r_24",
+      "name": "get_support_conversation",
+      "kind": "store",
+      "label": "Support inbox",
+      "input": {
+        "order_id": "KA-10503"
+      },
+      "at": "2026-10-20T12:05:38.427Z"
+    },
+    {
+      "t": "thinking",
+      "text": "This case is strong for us — the customer's order history shows zero prior disputes, which helps credibility. I'm gathering exhibits: tracking info, risk assessment, messages, customer history, order details, and seller protection documentation.\n\n"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgn04k0_27",
+      "name": "file_case_brief",
+      "kind": "brief",
+      "label": "Case brief",
+      "input": {
+        "decision": "FIGHT",
+        "headline": "Signed for by D REYES, 3DS-authenticated, buyer chatted about the item — fight",
+        "summary": "The cardholder says this $420 briefcase order was unauthorized. Nothing in the records backs that up. Checkout passed 3-D Secure with AVS and CVV matches, from a device the customer has used since February and an IP 4 km from his address. UPS got a signature from \"D REYES\" at the transaction address, and the next day the buyer messaged the store to say the briefcase arrived and was beautiful. Seller Protection requirements all pass, so fight with the proof.",
+        "win_likelihood": 88,
+        "confidence": "HIGH",
+        "reasoning": [
+          {
+            "point": "Checkout was authenticated: 3-D Secure AUTHENTICATED, AVS Y, CVV M. The IP was in Columbus, OH, 4 km from the shipping address, on device dv_aa07, first seen 2026-02-02.",
+            "refs": [
+              "risk:KA-10503"
+            ]
+          },
+          {
+            "point": "Shipped by UPS 2nd Day Air with signature required to the transaction address. Delivered 2026-09-28, signed by D REYES. Tracking is already synced to PayPal.",
+            "refs": [
+              "shipment:SHP-10503",
+              "order:KA-10503"
+            ]
+          },
+          {
+            "point": "On 2026-09-29 the buyer wrote 'Briefcase arrived, it's beautiful' and asked about the combination lock. He received the item and used it.",
+            "refs": [
+              "msg:MSG-10503-1"
+            ]
+          },
+          {
+            "point": "Established customer: 3 orders since February 2026, $664 lifetime value, no prior disputes. The device and email are the same as on earlier orders.",
+            "refs": [
+              "customer:d.reyes@example.com"
+            ]
+          },
+          {
+            "point": "Every Seller Protection check passes for an unauthorized claim: shipped to the transaction address with verifiable tracking, 1 day after payment.",
+            "refs": [
+              "paypal:seller-protection:PP-D-50219"
+            ]
+          }
+        ],
+        "risks": [
+          "The deadline is 2026-10-21 23:59 UTC with 1 day left. Submit today.",
+          "The card issuer might weigh this differently from PayPal. Still, signature plus 3DS plus the buyer's own message is strong.",
+          "No delivery photo; we rely on the UPS signature record."
+        ],
+        "missing_evidence": [
+          "UPS signature image or proof-of-delivery PDF downloaded from UPS",
+          "Confirmation that earlier orders KA-9466 and KA-9603 were delivered to the same address and never disputed"
+        ],
+        "exhibits": [
+          {
+            "label": "A",
+            "title": "UPS tracking — delivered and signed by D REYES",
+            "ref": "shipment:SHP-10503",
+            "why": "Shipped 2026-09-26 and delivered 2026-09-28 to 481 Oak Park Ave, Columbus OH, which matches the transaction address. Signed by D REYES."
+          },
+          {
+            "label": "B",
+            "title": "Checkout authentication and risk signals",
+            "ref": "risk:KA-10503",
+            "why": "3-D Secure authenticated, AVS Y, CVV M. IP in Columbus 4 km from the address, on a device known since Feb 2026."
+          },
+          {
+            "label": "C",
+            "title": "Buyer's post-delivery message",
+            "ref": "msg:MSG-10503-1",
+            "why": "The buyer confirmed the briefcase arrived, said it was beautiful, and asked how to use the lock."
+          },
+          {
+            "label": "D",
+            "title": "Order details and transaction address",
+            "ref": "order:KA-10503",
+            "why": "Billing and shipping address are the same. Signature-required shipping. Policies accepted at checkout."
+          },
+          {
+            "label": "E",
+            "title": "Customer history",
+            "ref": "customer:d.reyes@example.com",
+            "why": "Three orders since Feb 2026, no prior disputes. Shows an established, legitimate relationship."
+          }
+        ],
+        "paypal_action": {
+          "type": "provide_evidence",
+          "evidence_types": [
+            "PROOF_OF_FULFILLMENT",
+            "PROOF_OF_DELIVERY_SIGNATURE",
+            "OTHER"
+          ],
+          "tracking_ref": "shipment:SHP-10503"
+        },
+        "response_letter": "Kora Atelier contests this chargeback: the account holder authorized this purchase, received the item and confirmed it in writing.\n\n1. Order KA-10503 (capture 2HT58193LQ0047731, $420.00) was placed on 2026-09-25 for one Atelier Briefcase — Espresso. Billing and shipping address are the same: Daniel Reyes, 481 Oak Park Ave, Columbus, OH 43215 (Exhibit D).\n\n2. Payment passed 3-D Secure authentication with AVS match (Y) and CVV match (M). The checkout IP 73.88.201.14 geolocates to Columbus, OH, 4 km from the address. The device has been used by this customer since February 2026 (Exhibit B).\n\n3. We shipped on 2026-09-26 by UPS 2nd Day Air with signature required, tracking 1Z84V6A90298355102, to the address on the transaction. UPS recorded delivery on 2026-09-28 at 16:52, signed by D REYES (Exhibit A). Tracking was synced to PayPal.\n\n4. On 2026-09-29 the buyer wrote to us by chat: \"Briefcase arrived, it's beautiful. Does the combination lock come set to 000?\" We answered within an hour (Exhibit C).\n\n5. This is the customer's third order with us since February 2026, with no prior disputes (Exhibit E).\n\nThe cardholder's own authenticated payment, his signature on delivery and his written confirmation show the transaction was authorized and the goods were received. We request that the chargeback be resolved in our favor.\n\nKora Atelier LLC, Brooklyn, NY — studio@koraatelier.example",
+        "buyer_message": null
+      },
+      "at": "2026-10-20T12:05:58.416Z"
+    }
+  ],
+  "brief": {
+    "decision": "FIGHT",
+    "headline": "Signed for by D REYES, 3DS-authenticated, buyer chatted about the item — fight",
+    "summary": "The cardholder says this $420 briefcase order was unauthorized. Nothing in the records backs that up. Checkout passed 3-D Secure with AVS and CVV matches, from a device the customer has used since February and an IP 4 km from his address. UPS got a signature from \"D REYES\" at the transaction address, and the next day the buyer messaged the store to say the briefcase arrived and was beautiful. Seller Protection requirements all pass, so fight with the proof.",
+    "win_likelihood": 88,
+    "confidence": "HIGH",
+    "reasoning": [
+      {
+        "point": "Checkout was authenticated: 3-D Secure AUTHENTICATED, AVS Y, CVV M. The IP was in Columbus, OH, 4 km from the shipping address, on device dv_aa07, first seen 2026-02-02.",
+        "refs": [
+          "risk:KA-10503"
+        ]
+      },
+      {
+        "point": "Shipped by UPS 2nd Day Air with signature required to the transaction address. Delivered 2026-09-28, signed by D REYES. Tracking is already synced to PayPal.",
+        "refs": [
+          "shipment:SHP-10503",
+          "order:KA-10503"
+        ]
+      },
+      {
+        "point": "On 2026-09-29 the buyer wrote 'Briefcase arrived, it's beautiful' and asked about the combination lock. He received the item and used it.",
+        "refs": [
+          "msg:MSG-10503-1"
+        ]
+      },
+      {
+        "point": "Established customer: 3 orders since February 2026, $664 lifetime value, no prior disputes. The device and email are the same as on earlier orders.",
+        "refs": [
+          "customer:d.reyes@example.com"
+        ]
+      },
+      {
+        "point": "Every Seller Protection check passes for an unauthorized claim: shipped to the transaction address with verifiable tracking, 1 day after payment.",
+        "refs": [
+          "paypal:seller-protection:PP-D-50219"
+        ]
+      }
+    ],
+    "risks": [
+      "The deadline is 2026-10-21 23:59 UTC with 1 day left. Submit today.",
+      "The card issuer might weigh this differently from PayPal. Still, signature plus 3DS plus the buyer's own message is strong.",
+      "No delivery photo; we rely on the UPS signature record."
+    ],
+    "missing_evidence": [
+      "UPS signature image or proof-of-delivery PDF downloaded from UPS",
+      "Confirmation that earlier orders KA-9466 and KA-9603 were delivered to the same address and never disputed"
+    ],
+    "exhibits": [
+      {
+        "label": "A",
+        "title": "UPS tracking — delivered and signed by D REYES",
+        "ref": "shipment:SHP-10503",
+        "why": "Shipped 2026-09-26 and delivered 2026-09-28 to 481 Oak Park Ave, Columbus OH, which matches the transaction address. Signed by D REYES."
+      },
+      {
+        "label": "B",
+        "title": "Checkout authentication and risk signals",
+        "ref": "risk:KA-10503",
+        "why": "3-D Secure authenticated, AVS Y, CVV M. IP in Columbus 4 km from the address, on a device known since Feb 2026."
+      },
+      {
+        "label": "C",
+        "title": "Buyer's post-delivery message",
+        "ref": "msg:MSG-10503-1",
+        "why": "The buyer confirmed the briefcase arrived, said it was beautiful, and asked how to use the lock."
+      },
+      {
+        "label": "D",
+        "title": "Order details and transaction address",
+        "ref": "order:KA-10503",
+        "why": "Billing and shipping address are the same. Signature-required shipping. Policies accepted at checkout."
+      },
+      {
+        "label": "E",
+        "title": "Customer history",
+        "ref": "customer:d.reyes@example.com",
+        "why": "Three orders since Feb 2026, no prior disputes. Shows an established, legitimate relationship."
+      }
+    ],
+    "paypal_action": {
+      "type": "provide_evidence",
+      "evidence_types": [
+        "PROOF_OF_FULFILLMENT",
+        "PROOF_OF_DELIVERY_SIGNATURE",
+        "OTHER"
+      ],
+      "tracking_ref": "shipment:SHP-10503"
+    },
+    "response_letter": "Kora Atelier contests this chargeback: the account holder authorized this purchase, received the item and confirmed it in writing.\n\n1. Order KA-10503 (capture 2HT58193LQ0047731, $420.00) was placed on 2026-09-25 for one Atelier Briefcase — Espresso. Billing and shipping address are the same: Daniel Reyes, 481 Oak Park Ave, Columbus, OH 43215 (Exhibit D).\n\n2. Payment passed 3-D Secure authentication with AVS match (Y) and CVV match (M). The checkout IP 73.88.201.14 geolocates to Columbus, OH, 4 km from the address. The device has been used by this customer since February 2026 (Exhibit B).\n\n3. We shipped on 2026-09-26 by UPS 2nd Day Air with signature required, tracking 1Z84V6A90298355102, to the address on the transaction. UPS recorded delivery on 2026-09-28 at 16:52, signed by D REYES (Exhibit A). Tracking was synced to PayPal.\n\n4. On 2026-09-29 the buyer wrote to us by chat: \"Briefcase arrived, it's beautiful. Does the combination lock come set to 000?\" We answered within an hour (Exhibit C).\n\n5. This is the customer's third order with us since February 2026, with no prior disputes (Exhibit E).\n\nThe cardholder's own authenticated payment, his signature on delivery and his written confirmation show the transaction was authorized and the goods were received. We request that the chargeback be resolved in our favor.\n\nKora Atelier LLC, Brooklyn, NY — studio@koraatelier.example",
+    "buyer_message": null
+  }
+}

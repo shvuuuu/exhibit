@@ -1,0 +1,238 @@
+{
+  "scenario": "inquiry-packstation-de",
+  "model": "claude-opus-5-5",
+  "recorded_at": "2026-10-20T12:06:02.067Z",
+  "ids": {
+    "dispute_id": "PP-D-50236",
+    "order_id": "KA-10524"
+  },
+  "events": [
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzjf1_0",
+      "name": "get_paypal_dispute",
+      "kind": "paypal",
+      "label": "PayPal Disputes API",
+      "input": {
+        "dispute_id": "PP-D-50236"
+      },
+      "at": "2026-10-20T12:05:31.021Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzl5v_6",
+      "name": "lookup_order",
+      "kind": "store",
+      "label": "Store orders",
+      "input": {
+        "transaction_id": "5JC71842VW2290035",
+        "invoice_number": "KA-10524"
+      },
+      "at": "2026-10-20T12:05:33.283Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzliq_11",
+      "name": "check_seller_protection",
+      "kind": "policy",
+      "label": "PayPal Seller Protection",
+      "input": {
+        "dispute_id": "PP-D-50236"
+      },
+      "at": "2026-10-20T12:05:33.746Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzloo_13",
+      "name": "get_customer_history",
+      "kind": "store",
+      "label": "Customer history",
+      "input": {
+        "email": "lena.vogel@example.de"
+      },
+      "at": "2026-10-20T12:05:33.960Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzn5a_20",
+      "name": "get_carrier_tracking",
+      "kind": "carrier",
+      "label": "Carrier tracking",
+      "input": {
+        "order_id": "KA-10524"
+      },
+      "at": "2026-10-20T12:05:35.854Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmznc0_21",
+      "name": "get_support_conversation",
+      "kind": "store",
+      "label": "Support inbox",
+      "input": {
+        "order_id": "KA-10524"
+      },
+      "at": "2026-10-20T12:05:36.096Z"
+    },
+    {
+      "t": "thinking",
+      "text": "The package was delivered to Packstation on 2026-10-18 with 7-day storage, so it's available until roughly 2026-10-25 — this is an inquiry stage, so I should message the buyer in German explaining the pickup code, which means the decision is MESSAGE_BUYER with an estimated 80% win likelihood if contested. I still need to draft that response message to the buyer.\n\n"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgn05th_28",
+      "name": "file_case_brief",
+      "kind": "brief",
+      "label": "Case brief",
+      "input": {
+        "decision": "MESSAGE_BUYER",
+        "headline": "Waiting in Packstation 128 for pickup. Tell the buyer in German before the 7-day hold runs out",
+        "summary": "DHL delivered the satchel on 2026-10-18 into Packstation 128, Berlin, which is the exact address on the PayPal transaction. The pickup code went out by email/app and the hold is 7 days (about 2026-10-25). The buyer likely hasn't picked it up yet. The case is still at the inquiry stage, so a friendly German message with the tracking number and pickup steps should close it without a refund. Seller Protection checks all pass if it escalates.",
+        "win_likelihood": 80,
+        "confidence": "HIGH",
+        "reasoning": [
+          {
+            "point": "DHL shows the parcel delivered on 2026-10-18 16:52 into Packstation 128 (PostNummer 41827793, Berlin 10405), matching the transaction address exactly. Tracking is synced to PayPal.",
+            "refs": [
+              "shipment:SHP-10524",
+              "order:KA-10524"
+            ]
+          },
+          {
+            "point": "The delivery scan says the pickup code was sent by email/app and the hold is 7 days. 'Delivered but not received' at a locker usually means the buyer hasn't collected it, and it may go back to sender after about 2026-10-25.",
+            "refs": [
+              "shipment:SHP-10524"
+            ]
+          },
+          {
+            "point": "Every Seller Protection requirement passes: covered claim, shipped to the transaction address, verifiable tracking, delivered status, shipped 1 day after payment.",
+            "refs": [
+              "paypal:seller-protection:PP-D-50236"
+            ]
+          },
+          {
+            "point": "Inquiry stage with 10 days left, and the buyer wrote in German. The playbook for locker deliveries says message first. First-time buyer, no prior disputes, no earlier contact with support.",
+            "refs": [
+              "paypal:dispute:PP-D-50236",
+              "customer:lena.vogel@example.de",
+              "conversation:KA-10524"
+            ]
+          }
+        ],
+        "risks": [
+          "If the buyer doesn't collect it before the 7-day hold ends, DHL may send it back. That turns into a return-to-sender case where we refund or reship.",
+          "There is no signature or photo for a Packstation delivery. If someone else got the pickup code, the buyer may escalate. Seller Protection should still cover a delivered scan at the matching address.",
+          "If the buyer escalates to a claim, file PROOF_OF_FULFILLMENT with SHP-10524 before 2026-10-30."
+        ],
+        "missing_evidence": [
+          "DHL record of whether the parcel has been taken out of Packstation 128 yet",
+          "Confirmation that DHL sent the pickup-code email/app notice to the buyer's DHL account"
+        ],
+        "exhibits": [
+          {
+            "label": "A",
+            "title": "DHL tracking: delivered to Packstation 128, Berlin",
+            "ref": "shipment:SHP-10524",
+            "why": "Verifiable tracking 00340434161094042557 shows delivery on 2026-10-18 into Packstation 128, PostNummer 41827793, 10405 Berlin, with a 7-day pickup hold."
+          },
+          {
+            "label": "B",
+            "title": "Order KA-10524 with transaction shipping address",
+            "ref": "order:KA-10524",
+            "why": "The PayPal transaction address is Packstation 128 / PostNummer 41827793, Berlin 10405. It matches the delivery address."
+          },
+          {
+            "label": "C",
+            "title": "Seller Protection eligibility check",
+            "ref": "paypal:seller-protection:PP-D-50236",
+            "why": "All published US Seller Protection requirements for item-not-received pass."
+          }
+        ],
+        "paypal_action": {
+          "type": "send_message"
+        },
+        "response_letter": "Kora Atelier shipped this order to the exact address on the PayPal transaction, and DHL shows it delivered to that Packstation, where it is waiting for pickup. Order KA-10524 (Messenger Satchel, Olive) was paid on 2026-10-12. It was shipped on 2026-10-13 to Packstation 128, PostNummer 41827793, 10405 Berlin, DE, the address on the transaction (Exhibit B). DHL tracking 00340434161094042557 shows customs clearance in Leipzig on 2026-10-15 and delivery into Packstation 128 on 2026-10-18 at 16:52. DHL's scan notes that the pickup code was sent by email/app and that the hold period is 7 days (Exhibit A). The tracking was synced to PayPal. We have written to the buyer in German with the tracking link and pickup steps so she can collect the parcel before the hold ends. All Seller Protection requirements are met (Exhibit C).",
+        "buyer_message": {
+          "language": "de",
+          "text": "Hallo Frau Vogel,\n\nes tut uns sehr leid, dass Sie sich Sorgen um Ihre Bestellung KA-10524 (Messenger Satchel – Olive) machen. Wir haben gute Nachrichten: Laut DHL liegt Ihr Paket seit dem 18.10.2026 um 16:52 Uhr in der Packstation 128 (10405 Berlin) für Sie bereit. Es wurde an die PostNummer 41827793 zugestellt.\n\nDHL hat Ihnen dazu einen Abholcode per E-Mail bzw. in der DHL Post & Paket App geschickt. Bitte schauen Sie auch im Spam-Ordner nach. Die Lagerfrist beträgt 7 Tage, das Paket kann also voraussichtlich bis etwa 25.10.2026 abgeholt werden.\n\nSendungsnummer: 00340434161094042557\nhttps://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=00340434161094042557\n\nFalls Sie keinen Abholcode finden, hilft Ihnen der DHL-Kundenservice mit Ihrer PostNummer weiter. Wenn es trotzdem nicht klappt, schreiben Sie uns bitte. Wir kümmern uns persönlich darum, dass Sie Ihre Tasche bekommen.\n\nHerzliche Grüße\nKora Atelier\nstudio@koraatelier.example",
+          "english": "Hello Ms. Vogel,\n\nWe're very sorry you're worried about your order KA-10524 (Messenger Satchel – Olive). Good news: according to DHL, your parcel has been waiting for you in Packstation 128 (10405 Berlin) since 18 Oct 2026 at 16:52. It was delivered to PostNummer 41827793.\n\nDHL sent you a pickup code by email or in the DHL Post & Paket app. Please check your spam folder too. The hold period is 7 days, so you should be able to collect the parcel until about 25 Oct 2026.\n\nTracking number: 00340434161094042557\n[DHL tracking link]\n\nIf you can't find the pickup code, DHL customer service can help using your PostNummer. If it still doesn't work, please write to us. We'll personally make sure you get your bag.\n\nWarm regards,\nKora Atelier\nstudio@koraatelier.example"
+        }
+      },
+      "at": "2026-10-20T12:06:00.053Z"
+    }
+  ],
+  "brief": {
+    "decision": "MESSAGE_BUYER",
+    "headline": "Waiting in Packstation 128 for pickup. Tell the buyer in German before the 7-day hold runs out",
+    "summary": "DHL delivered the satchel on 2026-10-18 into Packstation 128, Berlin, which is the exact address on the PayPal transaction. The pickup code went out by email/app and the hold is 7 days (about 2026-10-25). The buyer likely hasn't picked it up yet. The case is still at the inquiry stage, so a friendly German message with the tracking number and pickup steps should close it without a refund. Seller Protection checks all pass if it escalates.",
+    "win_likelihood": 80,
+    "confidence": "HIGH",
+    "reasoning": [
+      {
+        "point": "DHL shows the parcel delivered on 2026-10-18 16:52 into Packstation 128 (PostNummer 41827793, Berlin 10405), matching the transaction address exactly. Tracking is synced to PayPal.",
+        "refs": [
+          "shipment:SHP-10524",
+          "order:KA-10524"
+        ]
+      },
+      {
+        "point": "The delivery scan says the pickup code was sent by email/app and the hold is 7 days. 'Delivered but not received' at a locker usually means the buyer hasn't collected it, and it may go back to sender after about 2026-10-25.",
+        "refs": [
+          "shipment:SHP-10524"
+        ]
+      },
+      {
+        "point": "Every Seller Protection requirement passes: covered claim, shipped to the transaction address, verifiable tracking, delivered status, shipped 1 day after payment.",
+        "refs": [
+          "paypal:seller-protection:PP-D-50236"
+        ]
+      },
+      {
+        "point": "Inquiry stage with 10 days left, and the buyer wrote in German. The playbook for locker deliveries says message first. First-time buyer, no prior disputes, no earlier contact with support.",
+        "refs": [
+          "paypal:dispute:PP-D-50236",
+          "customer:lena.vogel@example.de",
+          "conversation:KA-10524"
+        ]
+      }
+    ],
+    "risks": [
+      "If the buyer doesn't collect it before the 7-day hold ends, DHL may send it back. That turns into a return-to-sender case where we refund or reship.",
+      "There is no signature or photo for a Packstation delivery. If someone else got the pickup code, the buyer may escalate. Seller Protection should still cover a delivered scan at the matching address.",
+      "If the buyer escalates to a claim, file PROOF_OF_FULFILLMENT with SHP-10524 before 2026-10-30."
+    ],
+    "missing_evidence": [
+      "DHL record of whether the parcel has been taken out of Packstation 128 yet",
+      "Confirmation that DHL sent the pickup-code email/app notice to the buyer's DHL account"
+    ],
+    "exhibits": [
+      {
+        "label": "A",
+        "title": "DHL tracking: delivered to Packstation 128, Berlin",
+        "ref": "shipment:SHP-10524",
+        "why": "Verifiable tracking 00340434161094042557 shows delivery on 2026-10-18 into Packstation 128, PostNummer 41827793, 10405 Berlin, with a 7-day pickup hold."
+      },
+      {
+        "label": "B",
+        "title": "Order KA-10524 with transaction shipping address",
+        "ref": "order:KA-10524",
+        "why": "The PayPal transaction address is Packstation 128 / PostNummer 41827793, Berlin 10405. It matches the delivery address."
+      },
+      {
+        "label": "C",
+        "title": "Seller Protection eligibility check",
+        "ref": "paypal:seller-protection:PP-D-50236",
+        "why": "All published US Seller Protection requirements for item-not-received pass."
+      }
+    ],
+    "paypal_action": {
+      "type": "send_message"
+    },
+    "response_letter": "Kora Atelier shipped this order to the exact address on the PayPal transaction, and DHL shows it delivered to that Packstation, where it is waiting for pickup. Order KA-10524 (Messenger Satchel, Olive) was paid on 2026-10-12. It was shipped on 2026-10-13 to Packstation 128, PostNummer 41827793, 10405 Berlin, DE, the address on the transaction (Exhibit B). DHL tracking 00340434161094042557 shows customs clearance in Leipzig on 2026-10-15 and delivery into Packstation 128 on 2026-10-18 at 16:52. DHL's scan notes that the pickup code was sent by email/app and that the hold period is 7 days (Exhibit A). The tracking was synced to PayPal. We have written to the buyer in German with the tracking link and pickup steps so she can collect the parcel before the hold ends. All Seller Protection requirements are met (Exhibit C).",
+    "buyer_message": {
+      "language": "de",
+      "text": "Hallo Frau Vogel,\n\nes tut uns sehr leid, dass Sie sich Sorgen um Ihre Bestellung KA-10524 (Messenger Satchel – Olive) machen. Wir haben gute Nachrichten: Laut DHL liegt Ihr Paket seit dem 18.10.2026 um 16:52 Uhr in der Packstation 128 (10405 Berlin) für Sie bereit. Es wurde an die PostNummer 41827793 zugestellt.\n\nDHL hat Ihnen dazu einen Abholcode per E-Mail bzw. in der DHL Post & Paket App geschickt. Bitte schauen Sie auch im Spam-Ordner nach. Die Lagerfrist beträgt 7 Tage, das Paket kann also voraussichtlich bis etwa 25.10.2026 abgeholt werden.\n\nSendungsnummer: 00340434161094042557\nhttps://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=00340434161094042557\n\nFalls Sie keinen Abholcode finden, hilft Ihnen der DHL-Kundenservice mit Ihrer PostNummer weiter. Wenn es trotzdem nicht klappt, schreiben Sie uns bitte. Wir kümmern uns persönlich darum, dass Sie Ihre Tasche bekommen.\n\nHerzliche Grüße\nKora Atelier\nstudio@koraatelier.example",
+      "english": "Hello Ms. Vogel,\n\nWe're very sorry you're worried about your order KA-10524 (Messenger Satchel – Olive). Good news: according to DHL, your parcel has been waiting for you in Packstation 128 (10405 Berlin) since 18 Oct 2026 at 16:52. It was delivered to PostNummer 41827793.\n\nDHL sent you a pickup code by email or in the DHL Post & Paket app. Please check your spam folder too. The hold period is 7 days, so you should be able to collect the parcel until about 25 Oct 2026.\n\nTracking number: 00340434161094042557\n[DHL tracking link]\n\nIf you can't find the pickup code, DHL customer service can help using your PostNummer. If it still doesn't work, please write to us. We'll personally make sure you get your bag.\n\nWarm regards,\nKora Atelier\nstudio@koraatelier.example"
+    }
+  }
+}

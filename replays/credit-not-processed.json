@@ -1,0 +1,233 @@
+{
+  "scenario": "credit-not-processed",
+  "model": "claude-opus-5-5",
+  "recorded_at": "2026-10-20T12:05:57.350Z",
+  "ids": {
+    "dispute_id": "PP-D-50231",
+    "order_id": "KA-10466"
+  },
+  "events": [
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzjok_1",
+      "name": "get_paypal_dispute",
+      "kind": "paypal",
+      "label": "PayPal Disputes API",
+      "input": {
+        "dispute_id": "PP-D-50231"
+      },
+      "at": "2026-10-20T12:05:31.364Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzl51_4",
+      "name": "lookup_order",
+      "kind": "store",
+      "label": "Store orders",
+      "input": {
+        "transaction_id": "7RB33058ND1156690"
+      },
+      "at": "2026-10-20T12:05:33.253Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzlcv_7",
+      "name": "get_customer_history",
+      "kind": "store",
+      "label": "Customer history",
+      "input": {
+        "email": "priya.patel@example.com"
+      },
+      "at": "2026-10-20T12:05:33.535Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzldx_9",
+      "name": "get_store_policies",
+      "kind": "policy",
+      "label": "Store policies",
+      "input": {},
+      "at": "2026-10-20T12:05:33.573Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzmrs_16",
+      "name": "get_carrier_tracking",
+      "kind": "carrier",
+      "label": "Carrier tracking",
+      "input": {
+        "order_id": "KA-10466"
+      },
+      "at": "2026-10-20T12:05:35.368Z"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgmzmu4_17",
+      "name": "get_support_conversation",
+      "kind": "store",
+      "label": "Support inbox",
+      "input": {
+        "order_id": "KA-10466"
+      },
+      "at": "2026-10-20T12:05:35.452Z"
+    },
+    {
+      "t": "thinking",
+      "text": "Return arrived Oct 16, so the 3-business-day window runs out Oct 21, and since no refund's been recorded yet while it's at chargeback stage, the buyer's claim looks valid. The merchant should issue the refund — I'm thinking the right move is a refund_then_prove flow: process the refund on the capture, then submit PROOF_OF_REFUND via provide_evidence, since that's not a standalone allowed action but fits as a two-step approach.\n\nActually the cleanest path is accept_claim with REFUND for $180, which avoids any risk of double refunding if the merchant also tries to refund separately. The return was within the 30-day window regardless of exact inspection status, so policy supports a refund here; I'll include a brief, warm buyer message since this is a repeat customer worth retaining.\n\n"
+    },
+    {
+      "t": "tool_call",
+      "id": "call_mvgn026h_26",
+      "name": "file_case_brief",
+      "kind": "brief",
+      "label": "Case brief",
+      "input": {
+        "decision": "REFUND",
+        "headline": "Return arrived Oct 16 and no refund issued yet — accept and refund $180",
+        "summary": "Priya Patel, a repeat customer with 5 orders and no prior disputes, returned the clutch on our prepaid UPS label. UPS shows it was delivered to the studio on 2026-10-16, signed for by K. NAIR. The order shows no refund, so we have nothing to send in answer to PayPal's PROOF_OF_REFUND request. Our own policy promises a refund within 3 business days of arrival, so the buyer is owed $180. Accepting now refunds her once, avoids a lost chargeback and keeps a good customer.",
+        "win_likelihood": 3,
+        "confidence": "HIGH",
+        "reasoning": [
+          {
+            "point": "The buyer started the return on 2026-10-10, within 30 days of the 2026-09-19 delivery, and we sent her a prepaid label saying we refund within 3 business days of arrival.",
+            "refs": [
+              "msg:MSG-10466-1",
+              "msg:MSG-10466-2",
+              "shipment:SHP-10466"
+            ]
+          },
+          {
+            "point": "UPS return tracking shows the parcel delivered to our Brooklyn studio on 2026-10-16, received by K. NAIR.",
+            "refs": [
+              "shipment:RTN-10466"
+            ]
+          },
+          {
+            "point": "The order record has no refunds. PayPal is asking only for PROOF_OF_REFUND, and we cannot provide it.",
+            "refs": [
+              "order:KA-10466",
+              "paypal:dispute:PP-D-50231"
+            ]
+          },
+          {
+            "point": "Our returns policy, accepted at checkout, promises a full refund for unused items within 3 business days of arrival. We have no QC record of the item arriving used or damaged.",
+            "refs": [
+              "policy:returns"
+            ]
+          },
+          {
+            "point": "She is a loyal buyer ($905 lifetime value, 5 orders, 0 prior disputes), so a quick refund protects the relationship.",
+            "refs": [
+              "customer:priya.patel@example.com"
+            ]
+          }
+        ],
+        "risks": [
+          "Do not also refund the capture by hand. Accepting the claim already refunds $180, and doing both would pay her twice.",
+          "If the studio finds the returned clutch was used or damaged, that should have been raised before the chargeback. There is no QC photo, so it can't be argued now."
+        ],
+        "missing_evidence": [
+          "A QC record or photo of the returned clutch's condition on arrival at the studio",
+          "Any record of a refund already issued for KA-10466 (none was found)"
+        ],
+        "exhibits": [
+          {
+            "label": "A",
+            "title": "UPS return delivered to studio 2026-10-16",
+            "ref": "shipment:RTN-10466",
+            "why": "Shows the item came back to Kora Atelier, so a refund is owed under our policy."
+          },
+          {
+            "label": "B",
+            "title": "Returns & Refunds policy v2026-03",
+            "ref": "policy:returns",
+            "why": "Promises a full refund within 3 business days of a return arriving."
+          }
+        ],
+        "paypal_action": {
+          "type": "accept_claim",
+          "amount": 180
+        },
+        "response_letter": "Kora Atelier accepts this claim and is refunding the full $180.00 for order KA-10466. The buyer asked to return the Weekend Clutch on 2026-10-10, and we sent her a prepaid UPS return label. UPS delivered the return to our Brooklyn studio on 2026-10-16 (Exhibit A, tracking 1Z84V6A99013377240). Our returns policy promises a refund within 3 business days of a return arriving (Exhibit B). The refund had not been issued when this case was opened, and we apologize to the buyer for the delay.",
+        "buyer_message": {
+          "language": "en",
+          "text": "Hi Priya,\n\nThank you for sending the Weekend Clutch back. It reached our studio on October 16, and we're sorry the refund didn't go out right away. We've accepted the claim through PayPal, and the full $180.00 is going back to your original payment method.\n\nWe're sorry the clutch didn't fit your phone. If you'd like help finding a larger piece, just reply to this email and we'll gladly help.\n\nWarmly,\nKora Atelier"
+        }
+      },
+      "at": "2026-10-20T12:05:55.337Z"
+    }
+  ],
+  "brief": {
+    "decision": "REFUND",
+    "headline": "Return arrived Oct 16 and no refund issued yet — accept and refund $180",
+    "summary": "Priya Patel, a repeat customer with 5 orders and no prior disputes, returned the clutch on our prepaid UPS label. UPS shows it was delivered to the studio on 2026-10-16, signed for by K. NAIR. The order shows no refund, so we have nothing to send in answer to PayPal's PROOF_OF_REFUND request. Our own policy promises a refund within 3 business days of arrival, so the buyer is owed $180. Accepting now refunds her once, avoids a lost chargeback and keeps a good customer.",
+    "win_likelihood": 3,
+    "confidence": "HIGH",
+    "reasoning": [
+      {
+        "point": "The buyer started the return on 2026-10-10, within 30 days of the 2026-09-19 delivery, and we sent her a prepaid label saying we refund within 3 business days of arrival.",
+        "refs": [
+          "msg:MSG-10466-1",
+          "msg:MSG-10466-2",
+          "shipment:SHP-10466"
+        ]
+      },
+      {
+        "point": "UPS return tracking shows the parcel delivered to our Brooklyn studio on 2026-10-16, received by K. NAIR.",
+        "refs": [
+          "shipment:RTN-10466"
+        ]
+      },
+      {
+        "point": "The order record has no refunds. PayPal is asking only for PROOF_OF_REFUND, and we cannot provide it.",
+        "refs": [
+          "order:KA-10466",
+          "paypal:dispute:PP-D-50231"
+        ]
+      },
+      {
+        "point": "Our returns policy, accepted at checkout, promises a full refund for unused items within 3 business days of arrival. We have no QC record of the item arriving used or damaged.",
+        "refs": [
+          "policy:returns"
+        ]
+      },
+      {
+        "point": "She is a loyal buyer ($905 lifetime value, 5 orders, 0 prior disputes), so a quick refund protects the relationship.",
+        "refs": [
+          "customer:priya.patel@example.com"
+        ]
+      }
+    ],
+    "risks": [
+      "Do not also refund the capture by hand. Accepting the claim already refunds $180, and doing both would pay her twice.",
+      "If the studio finds the returned clutch was used or damaged, that should have been raised before the chargeback. There is no QC photo, so it can't be argued now."
+    ],
+    "missing_evidence": [
+      "A QC record or photo of the returned clutch's condition on arrival at the studio",
+      "Any record of a refund already issued for KA-10466 (none was found)"
+    ],
+    "exhibits": [
+      {
+        "label": "A",
+        "title": "UPS return delivered to studio 2026-10-16",
+        "ref": "shipment:RTN-10466",
+        "why": "Shows the item came back to Kora Atelier, so a refund is owed under our policy."
+      },
+      {
+        "label": "B",
+        "title": "Returns & Refunds policy v2026-03",
+        "ref": "policy:returns",
+        "why": "Promises a full refund within 3 business days of a return arriving."
+      }
+    ],
+    "paypal_action": {
+      "type": "accept_claim",
+      "amount": 180
+    },
+    "response_letter": "Kora Atelier accepts this claim and is refunding the full $180.00 for order KA-10466. The buyer asked to return the Weekend Clutch on 2026-10-10, and we sent her a prepaid UPS return label. UPS delivered the return to our Brooklyn studio on 2026-10-16 (Exhibit A, tracking 1Z84V6A99013377240). Our returns policy promises a refund within 3 business days of a return arriving (Exhibit B). The refund had not been issued when this case was opened, and we apologize to the buyer for the delay.",
+    "buyer_message": {
+      "language": "en",
+      "text": "Hi Priya,\n\nThank you for sending the Weekend Clutch back. It reached our studio on October 16, and we're sorry the refund didn't go out right away. We've accepted the claim through PayPal, and the full $180.00 is going back to your original payment method.\n\nWe're sorry the clutch didn't fit your phone. If you'd like help finding a larger piece, just reply to this email and we'll gladly help.\n\nWarmly,\nKora Atelier"
+    }
+  }
+}

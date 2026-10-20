@@ -1,0 +1,106 @@
+PayPal's Seller Protection Program
+Menu
+Back To Home Page
+Download Printable PDF
+PayPal's Seller Protection Program
+PayPal's Seller Protection Program
+Last updated on January 26, 2026
+What’s Eligible
+If you sell a good or service to a buyer, you may be eligible for PayPal’s Seller Protection program, which terms and conditions are set forth herein and form part of the User Agreement. When it applies, PayPal’s Seller Protection program may result in you retaining the full purchase amount. PayPal determines, in its sole discretion, whether your claim is eligible for PayPal’s Seller Protection program based on the eligibility requirements, any information or documentation provided during the resolution process, or any other information PayPal deems relevant and appropriate under the circumstances. There is no limit on the number of payments eligible for PayPal’s Seller Protection program. By accessing the Transaction Details page in your PayPal account you can see transactions that may be eligible for protection under this program.
+PayPal’s Seller Protection program may apply when buyer(s) claim that:
+They did not authorize, or benefit from, funds sent from their PayPal account (referred to as an “Unauthorized Transaction” claim), and the Unauthorized Transaction(s) occur in an environment hosted by PayPal; or
+They didn’t receive the item from you (referred to as an “Item Not Received” claim); provided, however, that Item Not Received claims that result from buyers filing chargeback claims with their issuers for card-funded transactions are not eligible for PayPal’s Seller Protection.
+PayPal’s Seller Protection program may also apply when a transaction is reversed because of a successful chargeback by a buyer because they did not authorize the card-funded payment or when a bank funded payment is reversed by the buyer’s bank.
+These terms describe PayPal’s Seller Protection program as it applies to you, but you should also be familiar with the Impact of various purchase protection processes on sellers.
+Basic Requirements
+To be eligible for PayPal’s Seller Protection program, all of the following basic requirements must be met, as well as any applicable additional requirements:
+The primary address for your PayPal account must be in the United States.
+The item must be a physical, tangible good that can be shipped, except for items subject to the Intangible Goods Additional Requirements. Transactions involving items that you deliver in person in connection with payment made in your physical store, may also be eligible for PayPal’s Seller Protection program so long as the buyer paid for the transaction in person by using a PayPal goods and services QR code.
+You must ship the item to the shipping address on the Transaction Details page in your PayPal account for the transaction. If you originally ship the item to the recipient’s shipping address on the Transaction Details page but the item is later redirected to a different address, you will not be eligible for PayPal’s Seller Protection program. We therefore recommend not using a shipping service that is arranged by the buyer, so that you will be able to provide valid proof of shipping and delivery.
+The shipping requirement does not apply to eligible transactions involving items that you deliver in person; provided, however, that you agree to provide us with alternative evidence of delivery or such additional documentation or information relating to the transaction that we may request.
+You must respond to PayPal’s requests for documentation and other information in a timely manner as requested in our email correspondence with you or in our correspondence with you through the Resolution Center. If you do not respond to PayPal’s request for documentation and other information in the time requested, you may not be eligible for PayPal’s Seller Protection program.
+If the sale involves pre-ordered or made-to-order goods, you must ship within the timeframe you specified in the listing. Otherwise, it is recommended that you ship all items within 7 days after receipt of payment.
+You provide us with valid proof of shipment or delivery.
+Where you have integrated a PayPal Checkout product with your website or application, the following requirements apply to Business Sellers operating a PayPal account for commercial activity to ensure optimal management of potentially fraudulent transactions:
+You must be using the current version of that PayPal Checkout product if you are accepting payments directly via a website or application. We encourage you to watch out for updates, as we may notify or announce from time to time, and immediately update that PayPal Checkout product.
+Ensure you are passing the required session information to PayPal at checkout if you are integrated with PayPal via a third party or if you have a native app integration. Passing of such information is necessary for PayPal to assess and identify potentially fraudulent transactions. 
+Additional integration requirements may apply to Sellers operating under high-risk business models. These requirements are instituted to ensure compliance with PayPal’s heightened security and risk management standards, thereby mitigating potential risks related to fraudulent transactions associated with these business models. PayPal will inform you of those requirements in advance, and you will be provided with a reasonable timeframe to make any changes that are necessary.
+In the case of Unauthorized Transaction claims, the payment must be marked “eligible” or “partially eligible” for PayPal’s Seller Protection program on the Transaction Details page.
+In the case of Unauthorized Transaction claim, you must provide valid proof of shipment or proof of delivery that demonstrates that the item was shipped or provided to the buyer no later than two days after PayPal notified you of the dispute or reversal. For example, if PayPal notifies you of an Unauthorized Transaction claim on September 1, the valid proof of shipment must indicate that the item was shipped to the buyer no later than September 3 to be eligible for PayPal’s Seller Protection program.
+Item Not Received Additional Requirement
+To be eligible for PayPal’s Seller Protection program for a buyer’s Item Not Received claim, you must meet both the basic requirements and the following additional requirement:
+You must provide proof of delivery as described below.
+Intangible Goods Additional Requirements
+For the sale of intangible goods and services to be eligible for PayPal’s Seller Protection program, the sale must meet the basic requirements and the following additional requirements:
+In the case of Unauthorized Transaction claims, PayPal has marked the intangible good transaction as “eligible” in the Transaction Details page or otherwise provided notice to you of eligibility in writing.
+Delivered the item and provide Proof of shipment or delivery for Intangible Goods.
+Establishing Proof of Shipment or Proof of Delivery
+Physical GoodsThe following is required as proof of shipment or delivery for physical goods:
+Proof of shipment
+Proof of delivery
+Online or physical documentation from a shipping company that includes:
+An online and verifiable tracking number.
+Date of shipment.
+An address for the recipient that matches the shipping address on the Transaction Details page.
+An address for the recipient showing at least the city/state, city/country, or zip/postal code (or international equivalent).
+Online or physical documentation from a shipping company that includes:
+An online and verifiable tracking number.
+Date of delivery and ‘delivered’ status.
+An address for the recipient that matches the shipping address on the Transaction Details page.
+An address for the recipient showing at least the city/state, city/country, or zip/postal code (or international equivalent).
+IMPORTANT: Your choice of carrier and shipment options with that carrier can have a big impact on your ability to meet the proof of delivery requirements. Please ensure, especially when shipping goods internationally, that your carrier can provide ‘delivered’ status at the correct address, or your Seller Protection claim may be denied.
+Intangible GoodsThe following is required as proof of shipment or delivery for intangible goods:
+QR Code TransactionsThe following is required as proof of shipment or proof of delivery:
+For intangible or digital goods, proof of shipment or delivery means compelling evidence to show the item was delivered or the purchase order was fulfilled. Compelling evidence could include a system of record showing the date the item was sent and that it was either:
+Electronically sent to the recipient, including the recipient’s address (email, IP, etc.), where applicable; or
+Received or accessed by the recipient.
+For QR code transactions, you may be required to provide us with alternative evidence of delivery or such additional documentation or information relating to the transaction.
+Ineligible Items and Transactions
+The following items or transactions are not eligible for PayPal’s Seller Protection program:
+Real estate, including residential property.
+Vehicles, including, but not limited to, motor vehicles, motorcycles, recreational vehicles, aircraft and boats, except for personally portable light vehicles used for recreational purposes like bicycles and wheeled hoverboards.
+Businesses (buying or investing in a business).
+Industrial machinery used in manufacturing.
+Payments equivalent to cash, including stored value items such as gift cards and pre-paid cards.
+Payments made in respect of gold (whether in physical form or in exchange-traded form).
+Financial products or investments of any kind.
+Non-Fungible Tokens (NFTs) with a transaction amount of:
+$10,000.01 USD or above (or equivalent value in local currency as calculated at the time of the transaction);
+$10,000.00 USD or below (or equivalent value in local currency as calculated at the time of the transaction), unless the buyer claims it was an Unauthorized Transaction and the transaction meets all other eligibility requirements.
+Gambling, gaming, and/or any other activities with an entry fee and a prize.
+Donations, including payments received as crowdfunding or crowdlending.
+Payments to a state-run body (except for state-owned enterprises), a government agency, or to third-party collecting payment on behalf of a state-run body or government agency.
+Payments to any bill payment service.
+Payments you receive using the account and routing number assigned to your PayPal business account.
+Items where the buyer claims (either with us or their card issuer) that the item you sent isn’t what was ordered (referred to as a Significantly Not as Described claim).
+Item Not Received claims filed by your buyer directly with their card issuer.
+Physical, tangible items delivered in person, including in connection with a payment made in your physical store, unless the buyer paid for the transaction in person using PayPal’s goods and services QR code.
+Anything PayPal determines, in its sole discretion, is prohibited by this user agreement or PayPal’s Acceptable Use Policy, even if the transaction is initially marked as “eligible” or “partially eligible” on the Transaction Details page.
+Payments made using PayPal Payouts (formerly Mass Pay).
+Personal payments including a payment sent using PayPal’s friends and family functionality.
+Payments not processed through a buyer’s PayPal account, including PayPal Guest Checkout payments and Standard Credit and Debit Card Payments where the seller’s account is registered in the following countries – Singapore, China, Hong Kong, Australia, Italy, France, the Netherlands, Spain, Ireland, Poland, Sweden, Bulgaria, Austria, Portugal, Belgium, Norway, Greece, Denmark, Cyprus, Lithuania, Czechia, Estonia, Finland, Romania, Slovenia, Hungary, Slovakia, Malta, Latvia, and Luxembourg. Guest Checkout payments and Standard Credit and Debit Card Payments received by accounts registered in all other countries are otherwise eligible for Seller Protection.
+Items sent after PayPal advised you not to release the item.
+Travel tickets sold by a travel carrier where (1) the buyer claims (either with us or their financial institution) that it was an Unauthorized Transaction, and (2) such claim was filed more than 24 hours before the travel date.
+Help
+Contact
+Fees
+Security Center
+Privacy Center
+Shop
+Apps
+Enterprise
+Partners
+United States
+About
+Newsroom
+Jobs
+Investor Relations
+Government Relations
+© 1999–2026
+Accessibility
+Privacy Statement
+Cookies
+Legal
+Licenses
+PayPal is located at 2211 N 1st St. San Jose, CA 95131
+
